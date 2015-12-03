@@ -122,11 +122,11 @@ public class ShowAccount extends HttpServlet {
 
         try {
             ClientDataSource ds = new ClientDataSource();
-            ds.setDatabaseName("SDEV425");
+            ds.setDatabaseName("contact");
             ds.setServerName("localhost");
             ds.setPortNumber(1527);
-            ds.setUser("sdev425");
-            ds.setPassword("sdev425");
+            ds.setUser("nbuser");
+            ds.setPassword("nbuser");
             ds.setDataSourceName("jdbc:derby");
 
             Connection conn = ds.getConnection();
