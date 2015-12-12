@@ -33,12 +33,10 @@ public class ShowAccount extends HttpServlet {
     private int user_id;
     private String Cardholdername;
     private String CardType;
-    private String ServiceCode;
     private String CardNumber;
-    private int CAV_CCV2;
     private Date expiredate;
-    private String FullTrackData;
-    private String PIN;
+    //CAV_CCV2 still stored for authentication, but does not need to be displayed.
+    //private int CAV_CCV2;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,14 +56,16 @@ public class ShowAccount extends HttpServlet {
             // Send back to login page 
             response.sendRedirect("login.jsp");
         } else {
-            // Connect to the Database and pull the data
+            // Connect to the Database and pull the data,
+            // decrypt, and sanitize
             getData();
+            decryptData();
+            sanitizeData();
             
             // Set the Attribute for viewing in the JSP
             request.setAttribute("Cardholdername", Cardholdername);
             request.setAttribute("CardType", CardType);
             request.setAttribute("CardNumber", CardNumber);
-            request.setAttribute("CAV_CCV2", CAV_CCV2);
             request.setAttribute("expiredate", expiredate);
             
             RequestDispatcher dispatcher = request.getRequestDispatcher("account.jsp");
@@ -129,8 +129,7 @@ public class ShowAccount extends HttpServlet {
             Connection conn = ds.getConnection();
 
             Statement stmt = conn.createStatement();
-            String sql = "select user_id,Cardholdername, Cardtype,"
-                    + "ServiceCode, CardNumber,CAV_CCV2,expiredate,FullTrackData,PIN"
+            String sql = "select user_id,Cardholdername,Cardtype,CardNumber,CAV_CCV2,expiredate"
                     + " from customeraccount  where user_id = " + session.getAttribute("UMUCUserID");
             ResultSet rs = stmt.executeQuery(sql);
             // Assign values
@@ -138,18 +137,24 @@ public class ShowAccount extends HttpServlet {
                 user_id = rs.getInt(1);
                 Cardholdername = rs.getString(2);
                 CardType = rs.getString(3);
-                ServiceCode = rs.getString(4);
-                CardNumber = rs.getString(5);
-                CAV_CCV2 = rs.getInt(6);
-                expiredate = rs.getDate(7);
-                FullTrackData = rs.getString(8);
-                PIN = rs.getString(9);
+                CardNumber = rs.getString(4);
+                //CAV_CCV2 = rs.getInt(5);
+                expiredate = rs.getDate(5);
             }
 
         } catch (Exception e) {
             System.out.println("An error has occurred.");
         }
 
+    }
+    
+    public void decryptData() {
+       //nothing to decrypt yet! 
+    }
+    
+    /* Replace all but the last 4 of the card number with asterisks. */
+    public void sanitizeData() {
+        
     }
 
 }
