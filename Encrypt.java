@@ -12,7 +12,12 @@ public class Encrypt {
 		keyGenerator.init(128);
 		SecretKey secretKey = keyGenerator.generateKey();
                 System.out.println(secretKey);
-                cipher = Cipher.getInstance("AES");
+                
+                //byte[] salt = "ThisIsASecretKey".getBytes();
+		//Key key = new SecretKeySpec(salt, 0, 16, "AES");
+		
+		cipher = Cipher.getInstance("AES");
+
 
 		String plainText = "1111111111111";
 		System.out.println("Plain Text Before Encryption: " + plainText);
