@@ -52,27 +52,9 @@ city, state, zip)
 values (1,'james.robertson@umuc.edu','Jim', 'Robertson','Adelphi',
 'MD','20706');
 
--- Create a Fake Admin account for testing
-insert into sdev_users (user_id, email, firstname, lastname,
-city, state, zip)
-values (2,'test.admin@umuc.edu','Test', 'Admin','Adelphi',
-'MD','20706');
-
--- Create a Fake Customer account for testing
-insert into sdev_users (user_id, email, firstname, lastname,
-city, state, zip)
-values (3,'test.customer@umuc.edu','Test', 'Custtomer','Adelphi',
-'MD','20706');
-
 --Insert user_info
 insert into user_info (user_id, password) 
 values (1,'mypassword');
-
-insert into user_info (user_id, password) 
-values (2,'adminpasstest');
-
-insert into user_info (user_id, password) 
-values (3,'customerpasstest');
 
 
 -- Insert roles
@@ -100,9 +82,3 @@ values (3,1);
 -- Insert CustomerAccount
 insert into CustomerAccount (account_id, user_id,
 CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (1,1,'MasterCard','1111111111111',321,'James Robertson','02/23/2016');
-
-insert into CustomerAccount (account_id, user_id,
-CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (2,2,'Visa','222222222222',365,'Test Administrator','09/16/2018');
-
-insert into CustomerAccount (account_id, user_id,
-CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (3,3,'AMEX','333333333333',439,'Test Customer','05/30/2019');
