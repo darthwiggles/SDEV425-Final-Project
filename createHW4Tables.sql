@@ -54,7 +54,7 @@ values (1,'james.robertson@umuc.edu','Jim', 'Robertson','Adelphi',
 
 --Insert user_info
 insert into user_info (user_id, password) 
-values (1,'mypassword');
+values (1,'mypassword1');
 
 
 -- Insert roles
