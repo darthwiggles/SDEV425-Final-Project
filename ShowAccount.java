@@ -64,12 +64,9 @@ public class ShowAccount extends HttpServlet {
             // Set the Attribute for viewing in the JSP
             request.setAttribute("Cardholdername", Cardholdername);
             request.setAttribute("CardType", CardType);
-            request.setAttribute("ServiceCode", ServiceCode);
             request.setAttribute("CardNumber", CardNumber);
             request.setAttribute("CAV_CCV2", CAV_CCV2);
             request.setAttribute("expiredate", expiredate);
-            request.setAttribute("FullTrackData", FullTrackData);
-            request.setAttribute("PIN", PIN);
             
             RequestDispatcher dispatcher = request.getRequestDispatcher("account.jsp");
             dispatcher.forward(request, response);       
@@ -150,7 +147,7 @@ public class ShowAccount extends HttpServlet {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("An error has occurred.");
         }
 
     }
