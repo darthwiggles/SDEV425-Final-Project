@@ -154,7 +154,8 @@ public class ShowAccount extends HttpServlet {
     
     /* Replace all but the last 4 of the card number with asterisks. */
     public void sanitizeData() {
-        
+        CardNumber = CardNumber.substring(text.length() - 4);
+        CardNumber = ("************" + CardNumber);
     }
 
 }
