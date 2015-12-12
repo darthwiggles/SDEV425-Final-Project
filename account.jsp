@@ -30,7 +30,6 @@
             <% String Cardholdername = (String) request.getAttribute("Cardholdername");%>  
             <% String CardType = (String) request.getAttribute("CardType");%>   
             <% String CardNumber = (String) request.getAttribute("CardNumber");%>
-            <% String CAV_CCV2 = (String) request.getAttribute("CAV_CCV2").toString();%> 
             <% String expiredate = (String) request.getAttribute("expiredate").toString();%> 
           
             <form action="ContinueIt" method="post">
@@ -55,10 +54,6 @@
                     <tr>
                      <td> Card Number: </td>
                      <td><input type="text" name="cardnumber" value="<%= CardNumber%>" size="50" readOnly></td>
-                    </tr>
-                    <tr>
-                     <td> CAV CCV2: </td>
-                     <td><input type="text" name="cavccv2" value="<%= CAV_CCV2%>" size="50" readOnly></td>
                     </tr>
                      <tr>
                      <td> Expire Date: </td>
