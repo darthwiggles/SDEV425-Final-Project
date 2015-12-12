@@ -41,12 +41,9 @@ CREATE TABLE CustomerAccount (
   user_id INTEGER NOT NULL references sdev_users (user_id),
   Cardholdername VARCHAR(75) NOT NULL,
   CardType VARCHAR(20) NOT NULL,
-  ServiceCode VARCHAR(20) NOT NULL,
   CardNumber VARCHAR(30) NOT NULL,
   CAV_CCV2 INTEGER NOT NULL,  
-  expiredate date NOT NULL,
-  FullTrackData varchar (75) Not NULL,
-  PIN varchar(10) NOT Null
+  expiredate date NOT NULL
 );
 
 -- Insert records
@@ -102,13 +99,10 @@ values (3,1);
 
 -- Insert CustomerAccount
 insert into CustomerAccount (account_id, user_id,
-CardType, ServiceCode, CardNumber, CAV_CCV2, Cardholdername, expiredate,
-FullTrackData,PIN) values (1,1,'MasterCard','27aD','1111111111111',321,'James Robertson','02/23/2016','3323344ASDfc23442','3Ds2q');
+CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (1,1,'MasterCard','1111111111111',321,'James Robertson','02/23/2016');
 
 insert into CustomerAccount (account_id, user_id,
-CardType, ServiceCode, CardNumber, CAV_CCV2, Cardholdername, expiredate,
-FullTrackData,PIN) values (2,2,'Visa','34q4','222222222222',365,'Test Administrator','09/16/2018','9852QDFXu43678','9w21Q');
+CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (2,2,'Visa','222222222222',365,'Test Administrator','09/16/2018');
 
 insert into CustomerAccount (account_id, user_id,
-CardType, ServiceCode, CardNumber, CAV_CCV2, Cardholdername, expiredate,
-FullTrackData,PIN) values (3,3,'AMEX','48w5','333333333333',439,'Test Customer','05/30/2019','65234qwpH39302','92ERS2');
+CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (3,3,'AMEX','333333333333',439,'Test Customer','05/30/2019');
