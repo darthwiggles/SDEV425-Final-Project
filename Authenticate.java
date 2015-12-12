@@ -5,11 +5,15 @@
  */
 package SDEV425_HW4;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -89,10 +93,11 @@ public class Authenticate extends HttpServlet {
         this.username = request.getParameter("emailAddress");
         this.pword = request.getParameter("pfield");
         this.isValid = validate(this.username, this.pword);
-         response.setContentType("text/html;charset=UTF-8");
+        addToLog(username, user_id, isValid);
+        response.setContentType("text/html;charset=UTF-8");
         // Set the session variable
         if (isValid) {
-            // Create a session object if it is already not  created.
+            // Create a session object if it is already not created.
             session = request.getSession(true);
             session.setAttribute("UMUCUserEmail", username);         
             session.setAttribute("UMUCUserID", user_id);
@@ -105,7 +110,6 @@ public class Authenticate extends HttpServlet {
         } else {
             // Not a valid login
             // refer them back to the Login screen
-
             request.setAttribute("ErrorMessage", "Invalid Username or Password. Try again or contact Jim.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
             dispatcher.forward(request, response);
@@ -157,9 +161,47 @@ public class Authenticate extends HttpServlet {
             }
 
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("An error has occurred.");
         }
         return status;
+    }
+    
+    public static void addToLog(String name, int user_id, boolean isvalid) {
+        
+        String validstr;
+        if (isvalid == true) {
+            validstr = "succeeded.";
+        } else {
+            validstr = "failed.";
+        }
+        String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        
+        // declaring variables of log and initializing the buffered writer
+        String log = "At " + timestamp + ", " + name + "(" + user_id + ")"
+                + " attempted logon to SDEV425 Final Project, which " + validstr;
+        BufferedWriter writer = null;
+        
+        //write the log variable using the bufferedWriter to log.txt
+        try {
+            writer = new BufferedWriter(new FileWriter("log.txt"));
+            writer.write(log);
+        }
+        //print error message if there is one
+        catch (IOException io) {
+            System.out.println("An error has occurred.");
+        }
+        //close the file
+        finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            }
+            //print error message if there is one
+            catch (IOException io) {
+                System.out.println("An error has occurred.");
+            }
+        }
     }
 
 }
