@@ -81,4 +81,4 @@ values (3,1);
 
 -- Insert CustomerAccount
 insert into CustomerAccount (account_id, user_id,
-CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (1,1,'MasterCard','1111111111111',321,'James Robertson','02/23/2016');
+CardType, CardNumber, CAV_CCV2, Cardholdername, expiredate) values (1,1,'MasterCard','mCWN22O6jsaOf3o6lpDr0g==',321,'James Robertson','02/23/2016');
