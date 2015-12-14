@@ -55,6 +55,7 @@
                      <td> Card Number: </td>
                      <td><input type="text" name="cardnumber" value="<%= CardNumber%>" size="50" readOnly></td>
                     </tr>
+                    <tr>
                      <tr>
                      <td> Expire Date: </td>
                      <td><input type="text" name="expiredate" value="<%= expiredate%>" size="50" readOnly></td>
