@@ -6,7 +6,11 @@
 package SDEV425_HW4;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +32,15 @@ import org.apache.derby.jdbc.ClientDataSource;
 public class ShowAccount extends HttpServlet {
 
     // Variable
+    private int user_id;
     private HttpSession session;
     // Database field data
-    private int user_id;
     private String Cardholdername;
     private String CardType;
     private String CardNumber;
     private Date expiredate;
-    //CAV_CCV2 still stored for authentication, but does not need to be displayed.
-    //private int CAV_CCV2;
+    
+    static Cipher cipher;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,10 +60,17 @@ public class ShowAccount extends HttpServlet {
             // Send back to login page 
             response.sendRedirect("login.jsp");
         } else {
-            // Connect to the Database and pull the data,
-            // decrypt, and sanitize
+            // Connect to the Database and pull the data
             getData();
-            decryptData();
+            
+            //Decrypt the data
+            try {
+                decryptData();
+            }
+            catch (Exception e) {
+                System.out.println("An error has occurred.");
+            }
+            //Don't display the full data to the user
             sanitizeData();
             
             // Set the Attribute for viewing in the JSP
@@ -129,8 +140,8 @@ public class ShowAccount extends HttpServlet {
             Connection conn = ds.getConnection();
 
             Statement stmt = conn.createStatement();
-            String sql = "select user_id,Cardholdername,Cardtype,CardNumber,CAV_CCV2,expiredate"
-                    + " from customeraccount  where user_id = " + session.getAttribute("UMUCUserID");
+            String sql = "select user_id,Cardholdername,Cardtype,CardNumber,expiredate"
+                    + " from customeraccount where user_id = " + session.getAttribute("UMUCUserID");
             ResultSet rs = stmt.executeQuery(sql);
             // Assign values
             while (rs.next()) {
@@ -138,7 +149,6 @@ public class ShowAccount extends HttpServlet {
                 Cardholdername = rs.getString(2);
                 CardType = rs.getString(3);
                 CardNumber = rs.getString(4);
-                //CAV_CCV2 = rs.getInt(5);
                 expiredate = rs.getDate(5);
             }
 
@@ -148,14 +158,29 @@ public class ShowAccount extends HttpServlet {
 
     }
     
-    public void decryptData() {
-       //nothing to decrypt yet! 
+    public void decryptData() throws Exception {
+        
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
+		
+        String keyString = "abcdefghijklmnopqrstuv";
+        //Decode the base64 string
+        byte[] decodedKey = Base64.getDecoder().decode(keyString);
+        //Rebuild the key
+        SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        cipher = Cipher.getInstance("AES");
+        
+        Base64.Decoder decoder = Base64.getDecoder();
+	byte[] encryptedTextByte = decoder.decode(CardNumber);
+	cipher.init(Cipher.DECRYPT_MODE, secretKey);
+	byte[] decryptedByte = cipher.doFinal(encryptedTextByte);
+	String decryptedText = new String(decryptedByte);
+        CardNumber = decryptedText;
     }
     
     /* Replace all but the last 4 of the card number with asterisks. */
     public void sanitizeData() {
-        CardNumber = CardNumber.substring(text.length() - 4);
+        CardNumber = CardNumber.substring(CardNumber.length() - 4);
         CardNumber = ("****-****-****-" + CardNumber);
     }
-
 }
